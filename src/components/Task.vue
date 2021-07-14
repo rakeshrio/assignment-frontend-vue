@@ -8,6 +8,28 @@
       </h2>
     </div>
     <div>
+      <select v-model="sort" name="" id="">
+        <option
+          v-for="(data, index) in options"
+          :key="index"
+          :value="data.value"
+        >
+          {{ data.name }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <select v-model="limit" name="" id="">
+        <option
+          v-for="(data, index) in optionsLimit"
+          :key="index"
+          :value="data.value"
+        >
+          {{ data.name }}
+        </option>
+      </select>
+    </div>
+    <div>
       <input type="text" placeholder="name" v-model="name" />
       <input type="text" placeholder="description" v-model="description" />
       <button @click="addTask">Submit</button>
@@ -31,12 +53,37 @@
 export default {
   data() {
     return {
+      sort: { name: 1 },
+      options: [
+        {
+          name: "Name Ascending",
+          value: {
+            name: 1,
+          },
+        },
+        {
+          name: "Name Descending",
+          value: {
+            name: -1,
+          },
+        },
+      ],
+      optionsLimit: [
+        {
+          name: "10",
+          value: 10,
+        },
+        {
+          name: "20",
+          value: 20,
+        },
+      ],
       search: "",
       limit: 10,
-      name: '',
+      name: "",
       description: "",
       label: [],
-      projectId: ''
+      projectId: "",
     };
   },
   computed: {
@@ -44,40 +91,52 @@ export default {
       return this.$store.state.task;
     },
   },
-  watch :{
-      search() {
-          this.loadData()
-      },
-      limit () {
-          this.loadData()
-      },
-      payload () {
-          this.loadData()
-      }
+  watch: {
+    search() {
+      this.loadData();
+    },
+    limit() {
+      this.loadData();
+    },
+    payload() {
+      this.loadData();
+    },
+    sort() {
+      this.loadData();
+    },
   },
   methods: {
-    addTask(){
-    var obj =
-    {
-      name:this.name,
-      description:this.description,
-      project: this.projectId
-    }
-      this.$store.dispatch('add_task', obj)
+    addTask() {
+      var obj = {
+        name: this.name,
+        description: this.description,
+        project: this.projectId,
+      };
+      this.$store.dispatch("add_task", obj);
     },
-    deletetask(id){
-       this.$store.dispatch('delete_task', {id:id})
+    deletetask(id) {
+      this.$store.dispatch("delete_task", { id: id });
     },
     loadData() {
-        this.$store.dispatch("get_task", { id: this.projectId, limit: this.limit, offset: 0, search: this.search });
-    }
+      this.$store.dispatch("get_task", {
+        id: this.projectId,
+        sort: this.sort,
+        limit: this.limit,
+        offset: 0,
+        search: this.search,
+      });
+    },
   },
   created() {
-    this.projectId = this.$route.params.id
-    this.loadData()
+    this.projectId = this.$route.params.id;
+    this.loadData();
   },
 };
 </script>
 
 <style scoped>
+.card {
+    border: 1px solid gray;
+    padding: 5px;
+}
 </style>

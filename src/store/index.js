@@ -63,15 +63,19 @@ export default new Vuex.Store({
   },
   actions: {
     get_task ({ commit }, payload) {
+      var paramsQuery = {
+        limit: payload.limit,
+        offset: payload.offset
+      }
+      if (payload.search){
+        paramsQuery.q = payload.search
+      }
       commit('SET_LOADING', true)
       HTTP.post('task/sort/data', {
-        id: payload.id
+        id: payload.id,
+        sort: payload.sort
       },{
-        params: {
-          limit: payload.limit,
-          offset: payload.offset,
-          q: payload.search
-        }
+        params: paramsQuery
       })
         .then(response => {
           commit('GET_TASK', response.data.response)
@@ -82,11 +86,22 @@ export default new Vuex.Store({
           this.errors.push(e)
         })
     },
-    get_project ({ commit }) {
+    get_project ({ commit }, payload) {
+      var paramsQuery = {
+        limit: payload.limit,
+        offset: payload.offset
+      }
+      if (payload.search){
+        paramsQuery.q = payload.search
+      }
       commit('SET_LOADING', true)
-      HTTP.get('project')
+      HTTP.post('project/data', {
+        sort: payload.sort
+      },{
+        params: paramsQuery
+      })
         .then(response => {
-          commit('GET_PROJECT', response.data)
+          commit('GET_TASK', response.data.response)
           commit('SET_LOADING', false)
         })
         .catch(e => {
