@@ -50,12 +50,21 @@
       <div v-if="!loading && project.length == 0">
         <p>No Project Found</p>
       </div>
+      <div v-if="loading">
+        <p>LOADINGGGGGGGGGGGG</p>
+      </div>
     </div>
-
     <div class="card" v-if="open">
       <input type="text" v-model="ename" />
       <input type="text" v-model="esummary" />
       <button @click="edit()">save</button>
+    </div>
+    <div>
+      <ul style="display:flex">
+        <li style="margin:15px" v-for="(pageNumber, index) in totalPages" :key="index">
+          <a href="#" @click="setOffset(pageNumber)">{{ pageNumber }}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -97,15 +106,22 @@ export default {
       editid: "",
       ename: "",
       esummary: "",
+      offset: 0
     };
   },
   computed: {
     project() {
-      return this.$store.state.projects;
+      return this.$store.state.projects.response || []
+    },
+    totalProject() {
+      return this.$store.state.projects.total || []
     },
     loading() {
       return this.$store.state.makingAPIcalls;
     },
+    totalPages: function() {
+      return Math.ceil(this.totalProject  / this.limit);
+    }
   },
   created() {
     this.fetchData();
@@ -123,13 +139,22 @@ export default {
   sort() {
     this.fetchData();
   },
+  offset() {
+    this.fetchData();
+  },
   },
   methods: {
+    setOffset(number) {
+      if (this.limit < this.totalProject){
+        
+      this.offset = number * this.limit
+      }
+    },
     fetchData() {
       this.$store.dispatch("get_project", {
         sort: this.sort,
         limit: this.limit,
-        offset: 0,
+        offset: this.offset,
         search: this.search,
       });
     },

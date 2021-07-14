@@ -101,7 +101,7 @@ export default new Vuex.Store({
         params: paramsQuery
       })
         .then(response => {
-          commit('GET_PROJECT', response.data.response)
+          commit('GET_PROJECT', response.data)
           commit('SET_LOADING', false)
         })
         .catch(e => {
