@@ -104,7 +104,8 @@ export default {
   created() {
     this.fetchData();
   },
-  search() {
+  watch: {
+    search() {
     this.fetchData();
   },
   limit() {
@@ -115,6 +116,7 @@ export default {
   },
   sort() {
     this.fetchData();
+  },
   },
   methods: {
     fetchData() {
