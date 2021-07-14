@@ -102,12 +102,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("get_project", {
-      sort: this.sort,
-      limit: this.limit,
-      offset: 0,
-      search: this.search,
-    });
+    this.fetchData();
   },
   search() {
     this.loadData();
@@ -122,6 +117,14 @@ export default {
     this.loadData();
   },
   methods: {
+    fetchData() {
+      this.$store.dispatch("get_project", {
+        sort: this.sort,
+        limit: this.limit,
+        offset: 0,
+        search: this.search,
+      });
+    },
     addproject() {
       this.$store.dispatch("add_project", {
         name: this.name,
