@@ -112,11 +112,13 @@ export default new Vuex.Store({
 
     add_project({commit,dispatch}, add){
       commit('SET_LOADING', true)
+      var query = add.query
+      delete add['query']
       HTTP.post('project', add)
         .then(response => {
           // commit('GET_PROJECT', response.data)
           console.log(response)
-          dispatch('get_project')
+          dispatch("get_project", query)
           commit('SET_LOADING', false)
         })
         .catch(e => {

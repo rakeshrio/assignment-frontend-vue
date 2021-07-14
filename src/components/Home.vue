@@ -47,6 +47,9 @@
           </div>
         </div>
       </div>
+      <div v-if="!loading && project.length == 0">
+        <p>No Project Found</p>
+      </div>
     </div>
 
     <div class="card" v-if="open">
@@ -100,6 +103,9 @@ export default {
     project() {
       return this.$store.state.projects;
     },
+    loading() {
+      return this.$store.state.makingAPIcalls;
+    },
   },
   created() {
     this.fetchData();
@@ -131,6 +137,12 @@ export default {
       this.$store.dispatch("add_project", {
         name: this.name,
         summary: this.summary,
+        query: {
+          sort: this.sort,
+        limit: this.limit,
+        offset: 0,
+        search: this.search,
+        }
       });
     },
     deletetodo(id) {

@@ -45,6 +45,9 @@
           </div>
         </div>
       </div>
+      <div v-if="!loading && task.length == 0">
+        <p>No Task Found</p>
+      </div>
     </div>
   </div>
 </template>
@@ -88,8 +91,11 @@ export default {
   },
   computed: {
     task() {
-      return this.$store.state.task;
+      return this.$store.state.task || []
     },
+    loading() {
+      return this.$store.state.makingAPIcalls;
+    }
   },
   watch: {
     search() {
