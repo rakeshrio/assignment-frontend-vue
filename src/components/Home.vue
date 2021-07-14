@@ -153,6 +153,12 @@ export default {
         id: this.editid,
         name: this.ename,
         summary: this.esummary,
+        query: {
+          sort: this.sort,
+        limit: this.limit,
+        offset: 0,
+        search: this.search,
+        }
       });
     },
     editToggler(state, data) {

@@ -155,6 +155,8 @@ export default new Vuex.Store({
         })
     },
     edit_project({commit, dispatch},payload){
+      var query = payload.query
+      delete payload['query']
       commit('SET_LOADING', true)
       var id = payload.id
       delete[payload.id]
@@ -162,7 +164,7 @@ export default new Vuex.Store({
         .then(response => {
           // commit('GET_PROJECT', response.data)
           console.log(response)
-          dispatch('get_project')
+          dispatch('get_project', query)
           commit('SET_LOADING', false)
         })
         .catch(e => {
