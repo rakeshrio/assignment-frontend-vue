@@ -146,7 +146,15 @@ export default {
       });
     },
     deletetodo(id) {
-      this.$store.dispatch("delete_project", { id: id });
+      if(confirm('Are you sure?')){
+        this.$store.dispatch("delete_project", { id: id, 
+        query: {
+            sort: this.sort,
+            limit: this.limit,
+            offset: 0,
+            search: this.search,
+          } });
+        }
     },
     edit() {
       this.$store.dispatch("edit_project", {
@@ -155,9 +163,9 @@ export default {
         summary: this.esummary,
         query: {
           sort: this.sort,
-        limit: this.limit,
-        offset: 0,
-        search: this.search,
+          limit: this.limit,
+          offset: 0,
+          search: this.search,
         }
       });
     },
