@@ -62,11 +62,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    get_task ({ commit }) {
+    get_task ({ commit }, payload) {
       commit('SET_LOADING', true)
-      HTTP.get('task')
+      HTTP.post('task/sort/data', {
+        id: payload.id
+      },{
+        params: {
+          limit: payload.limit,
+          offset: payload.offset,
+          q: payload.search
+        }
+      })
         .then(response => {
-          commit('GET_TASK', response.data)
+          commit('GET_TASK', response.data.response)
           commit('SET_LOADING', false)
         })
         .catch(e => {
@@ -101,7 +109,20 @@ export default new Vuex.Store({
           this.errors.push(e)
         })
     },
-
+    add_task({commit,dispatch}, payload){
+      commit('SET_LOADING', true)
+      HTTP.post('task', payload)
+        .then(response => {
+          // commit('GET_PROJECT', response.data)
+          console.log(response)
+          dispatch('get_task', {id : payload.project})
+          commit('SET_LOADING', false)
+        })
+        .catch(e => {
+          commit('SET_LOADING', false)
+          this.errors.push(e)
+        })
+    },
     delete_project({commit, dispatch},payload){
       commit('SET_LOADING', true)
       HTTP.delete( `project/${payload.id}` )
