@@ -105,16 +105,16 @@ export default {
     this.fetchData();
   },
   search() {
-    this.loadData();
+    this.fetchData();
   },
   limit() {
-    this.loadData();
+    this.fetchData();
   },
   payload() {
-    this.loadData();
+    this.fetchData();
   },
   sort() {
-    this.loadData();
+    this.fetchData();
   },
   methods: {
     fetchData() {
